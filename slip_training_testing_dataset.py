@@ -1,4 +1,5 @@
-# This Python script reads NTU_RGB video and slips dataset into training and testing in the format of Kinetics dataset
+# Given RGB videos with the filename in the format of NTU dataset (e.g., S004C001P003R001A017_rgb), this Python script
+# reads NTU_RGB video and slips dataset into training and testing in the format of Kinetics dataset.
 # The format is as follows
 # 1 json file for training set. Format: {}
 # 1 json file for testing set
@@ -58,20 +59,19 @@ split_training_and_testing(video_name_list)
 print(len(training_list), training_list)
 print(len(testing_list), testing_list)
 
-def write_training_json_file(video_training_list):
-    with open('kinetics_train_label.json', 'w') as write_file:
+def write_json_file(video_list, filename):
+    with open(filename, 'w') as write_file:
         # for each filename, write the filename, label name, and label number in the json file
         data = {}
-        for i in range(len(video_training_list)):
-            filename = video_training_list[i].split('.')[0]
-            #print(filename)
-            label_index = int(video_training_list[i].split('_')[0].split('A')[1])
-            #print(label_index, video_training_list[i])
+        for i in range(len(video_list)):
+            filename = video_list[i].split('.')[0]
+            label_index = int(video_list[i].split('_')[0].split('A')[1])
             label =  action[str(label_index)]
             #print(label)
             # data +=  filename + "\": {" + "\"has_skeleton\": true," + "\"label\": " + "\"" + label + "\"," + "\"label_index\":" + str(label_index) + "}"
             # if i != len(video_training_list) -1:
             #     data += ','
+            # write data as a dictionary
             file_data = {}
             file_data['has_skeleton'] = True
             file_data['label'] = label
@@ -84,4 +84,5 @@ def write_training_json_file(video_training_list):
     #     data_string = json.load(target_file)
     # print(type(data_string), data_string)
 
-write_training_json_file(training_list)
+write_json_file(training_list,'kinetics_train_label.json')
+write_json_file(testing_list,'kinetics_val_label.json')
