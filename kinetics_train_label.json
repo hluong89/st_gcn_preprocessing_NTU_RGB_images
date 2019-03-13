@@ -1,0 +1,27 @@
+{
+  "S004C002P003R002A047_rgb": {
+    "has_skeleton": true,
+    "label_index": 47,
+    "label": "touch neck (neckache)"
+  },
+  "S004C003P003R001A007_rgb": {
+    "has_skeleton": true,
+    "label_index": 7,
+    "label": "throw"
+  },
+  "S004C003P003R001A006_rgb": {
+    "has_skeleton": true,
+    "label_index": 6,
+    "label": "pickup"
+  },
+  "S004C002P003R002A046_rgb": {
+    "has_skeleton": true,
+    "label_index": 46,
+    "label": "touch back (backache)"
+  },
+  "S004C002P003R002A048_rgb": {
+    "has_skeleton": true,
+    "label_index": 48,
+    "label": "nausea or vomiting condition"
+  }
+}
