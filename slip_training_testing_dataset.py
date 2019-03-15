@@ -10,9 +10,12 @@ import os
 import json
 
 #ntu_RGB_video_dir = "/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/hien_data/ntu/nturgb+d_rgb"
-ntu_RGB_video_dir = "data_testing"
+#ntu_RGB_video_dir = "data_testing"
+ntu_RGB_video_dir = "/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/hien_data/ntu/nturgb+d_rgb"
 
 kinetics_dataset_dir = "kinetics_dataset"
+
+# Note: also change in the convert_RGB_images_into_skeleton_info_based_on_openpose
 
 training_cameras = [2, 3]
 
@@ -55,10 +58,6 @@ def split_training_and_testing(video_list):
             testing_list.append(video_list[i])
 
 
-split_training_and_testing(video_name_list)
-print(len(training_list), training_list)
-print(len(testing_list), testing_list)
-
 def write_json_file(video_list, filename):
     with open(filename, 'w') as write_file:
         # for each filename, write the filename, label name, and label number in the json file
@@ -84,5 +83,11 @@ def write_json_file(video_list, filename):
     #     data_string = json.load(target_file)
     # print(type(data_string), data_string)
 
-write_json_file(training_list,'kinetics_train_label.json')
-write_json_file(testing_list,'kinetics_val_label.json')
+split_training_and_testing(video_name_list)
+print(len(training_list), training_list)
+print(len(testing_list), testing_list)
+
+train_file_dir = os.path.join(ntu_RGB_video_dir, 'kinetics_train_label.json')
+write_json_file(training_list,train_file_dir)
+val_file_dir = os.path.join(ntu_RGB_video_dir, 'kinetics_val_label.json')
+write_json_file(testing_list, val_file_dir)
