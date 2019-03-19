@@ -8,10 +8,14 @@ import os
 import json
 #from json import encoder
 import shutil
+import time
 
+# video_path = 'data_testing/testing_people'
+# skeleton_dir =  '/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/Code/st_gcn_preprocessing_NTU_RGB_images/data_testing/testing_people/json/'
 
-video_path = 'data_testing/testing_people'
-skeleton_dir =  '/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/Code/st_gcn_preprocessing_NTU_RGB_images/data_testing/testing_people/json/'
+video_path = '/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/hien_data/ntu/nturgb+d_rgb'
+#skeleton_dir =  '/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/Code/st_gcn_preprocessing_NTU_RGB_images/data_testing/testing_people/json/'
+skeleton_dir ='/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/hien_data/ntu/ntugrb_skeleton_Folder_frames_18_03/jsonBackUp'
 
 training_cameras = [2, 3]
 
@@ -80,9 +84,11 @@ def convert_skeleton_multiple_json_files_of_one_video(json_dir):
     json_info['label'] = action[str(label_index)]
 
     #fname_final = all_json_file[0].split('_')[0] + '.json'
-    fname_final = all_json_file[0].split('.')[0][0:-3] + '.json'
+    print('final name: ',json_dir, type(json_dir))
+    fname_final = json_dir.split('/')[-1] + '.json'
+    #fname_final = all_json_file[0].split('.')[0][0:-3] + '.json'
     print('fname_final: ', fname_final)
-
+    time.sleep(1)
     #skeleton_final_dir = json_dir.split('')
     fname_final_dir = os.path.join(json_dir, fname_final)
     write_skeleton_info_from_one_json_file(fname_final_dir, json_info)
@@ -130,21 +136,25 @@ def convert_skeleton_one_json_file(json_fname):
 
 
 
-# copy and slip video skeleton files into training and validating sets
-traing_skeleton_dir = '/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/Code/st_gcn_preprocessing_NTU_RGB_images/ntu_RGB_into_kinetics_dataset_preprocess/kinetics_train'
+# copy and split skeleton files into training and validating sets
+train_skeleton_dir = '/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/Code/st_gcn_preprocessing_NTU_RGB_images/ntu_RGB_into_kinetics_dataset_preprocess/kinetics_train'
 val_skeleton_dir = '/media/hien/b606dd41-ce02-4d1c-a14c-e0f67858c948/Code/st_gcn_preprocessing_NTU_RGB_images/ntu_RGB_into_kinetics_dataset_preprocess/kinetics_val'
 
-def copy_and_split_skeleton_files_into_training_and_val_sets(skeleton_all_img_dir, traing_dir, val_dir):
+def copy_and_split_skeleton_files_into_training_and_val_sets(skeleton_all_img_dir, train_dir, val_dir):
     all_skeleton_folder_list = os.listdir(skeleton_all_img_dir)
-    print(len(all_skeleton_folder_list), all_skeleton_folder_list)
+    #print(len(all_skeleton_folder_list), all_skeleton_folder_list)
+    print(len(all_skeleton_folder_list))
     for i in range(len(all_skeleton_folder_list)):
+
+
         # fname = all_skeleton_folder_list[i]
         camera_id = int(all_skeleton_folder_list[i].split('P')[0][-1])
         #print('camera: ', camera_id, all_skeleton_folder_list[i])
         fname = all_skeleton_folder_list[i] + '.json'
+        print(i, '.... file name: ', fname)
         skeleton_org = os.path.join(os.path.join(skeleton_all_img_dir, all_skeleton_folder_list[i]), fname)
         if camera_id in training_cameras:
-            shutil.copy(skeleton_org, traing_dir)
+            shutil.copy(skeleton_org, train_dir)
         else:
             shutil.copy(skeleton_org, val_dir)
 
@@ -164,7 +174,7 @@ def copy_and_split_skeleton_files_into_training_and_val_sets(skeleton_all_img_di
 # Change 'skeleton_dir' to the skeleton folder
 # Run this script to convert skeleton infomation (from step 2) into the final format
 # list all video files
-
+#
 # all_skeleton_folder_list =  os.listdir(skeleton_dir)
 #
 # for i in range(len(all_skeleton_folder_list)):
@@ -176,4 +186,4 @@ def copy_and_split_skeleton_files_into_training_and_val_sets(skeleton_all_img_di
 
 # Step 4: split the skeleton information of video into training and validating sets which is consistent with the training
 # and validating set files
-copy_and_split_skeleton_files_into_training_and_val_sets(skeleton_dir, traing_skeleton_dir, val_skeleton_dir)
+copy_and_split_skeleton_files_into_training_and_val_sets(skeleton_dir, train_skeleton_dir, val_skeleton_dir)
